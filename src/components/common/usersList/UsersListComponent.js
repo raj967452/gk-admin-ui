@@ -17,7 +17,7 @@ const UsersList = (props) => {
     currentPage,
     isLoading,
     headers,
-    sortColumn
+    sortColumn,
   } = props;
 
   useEffect(() => {
@@ -47,7 +47,11 @@ const UsersList = (props) => {
               </th>
               {headers &&
                 headers.map((headerString, headerIdx) => (
-                  <th key={headerIdx} style={{ textTransform: "capitalize" }} onClick={() =>sortColumn(headerString)}>
+                  <th
+                    key={headerIdx}
+                    style={{ textTransform: "capitalize" }}
+                    onClick={() => sortColumn(headerString)}
+                  >
                     {headerString}
                   </th>
                 ))}

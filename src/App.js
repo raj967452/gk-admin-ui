@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Form, Container, Row, Col } from "react-bootstrap";
 import getUsersData from "./services/UserService";
-import { searchUsers, getRecordIndex } from "./utilities";
+import { searchUsers, getRecordIndex, GetUserIDs } from "./utilities";
 import config from "./constants";
 
 import { UsersList } from "./components/common";
@@ -93,16 +93,21 @@ function App() {
     let temp = users;
     let index = temp.findIndex((user) => user.id === id);
     temp[index].isSelected = !temp[index].isSelected;
+    if (selectAllUsers.current.checked && !temp[index].isSelected) {
+      selectAllUsers.current.checked = false;
+    }
+
+    const allSelectedUsers = users.filter((user) => user.isSelected).length;
+    const allVisibleIDs = GetUserIDs(users, index).length;
+
+    console.log(allSelectedUsers, allVisibleIDs);
+
     setUsers(temp);
     setUpdate((prevState) => !prevState);
   };
 
   const selectAll = (event) => {
-    const userIds = users
-      .filter((user) => user.isShow)
-      .slice(index, index + config.PAGE_SIZE)
-      .map((user) => user.id);
-
+    const userIds = GetUserIDs(users, index);
     let temp = users.map((user) => {
       if (userIds.includes(user.id)) {
         user.isSelected = event.target.checked;
